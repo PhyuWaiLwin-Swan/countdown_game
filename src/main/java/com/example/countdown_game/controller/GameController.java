@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 /**
- * REST controller for managing game-related endpoints in the Countdown Game application.
  *
- * <p>This controller provides endpoints for generating vowels, consonants, and validating words
+ *
+ * This controller provides endpoints for generating vowels, consonants, and validating words
  * based on the current game session.</p>
  */
 @RestController
