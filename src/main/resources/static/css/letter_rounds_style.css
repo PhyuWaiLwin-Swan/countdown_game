@@ -5,7 +5,11 @@ body {
     text-align: center;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #f4f4f9; /* Light background for contrast */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Horizontally center the container */
+    align-items: center; /* Vertically center the container */
+    height: 100vh; /* Full viewport height */
 }
 
 h1 {
@@ -18,7 +22,17 @@ h1 {
     margin: 20px;
     gap: 10px;
 }
+.centered-container {
 
+    background-color: #dfe9ff;
+    width: 80%;
+    max-width: 600px;
+    padding: 200px;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+}
 .slot {
     width: 50px;
     height: 50px;
