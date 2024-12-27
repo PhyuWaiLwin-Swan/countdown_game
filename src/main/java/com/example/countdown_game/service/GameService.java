@@ -1,6 +1,10 @@
 package com.example.countdown_game.service;
 
+
+import com.example.countdown_game.config.Config;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.*;
 
 /**
@@ -31,6 +35,31 @@ public class GameService {
         }
         return vowels;
     }
+    /**
+     * Checks if a given word is valid by verifying its existence in a dictionary API.
+     *
+     * @param word The word to validate.
+     * @return {@code true} if the word exists in the dictionary API, {@code false} otherwise.
+     * @throws RuntimeException If there is an issue with the dictionary API request (e.g., network error or invalid response).
+     */
+    public boolean isValidWord(String word) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String apiUrl = Config.getApiUrl();
+            // Construct the URL by appending the word to the API endpoint
+            String url = apiUrl + word.toLowerCase();
+
+            // Make a GET request to the dictionary API
+            restTemplate.getForObject(url, Object.class);
+
+            // If the API returns a successful response, the word is valid
+            return true;
+        } catch (Exception e) {
+            // If an exception occurs (e.g., 404 Not Found), the word is invalid
+            return false;
+        }
+    }
+
 
     /**
      * Generates a specified number of random consonants.
@@ -60,6 +89,9 @@ public class GameService {
      * @return {@code true} if the word is valid; {@code false} otherwise
      */
     public boolean validateWord(String word, String letters) {
+        if (!isValidWord(word)) {
+            return false; // Word must be in the dictionary
+        }
         Map<Character, Integer> letterCount = new HashMap<>();
 
         // Count occurrences of each letter in the provided letter set
