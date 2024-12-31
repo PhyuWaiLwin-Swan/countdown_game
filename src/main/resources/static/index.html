@@ -9,8 +9,27 @@
 <body>
 <div class="home-container">
   <img src="assets/Countdown_titles_2012.png" alt="Countdown Game Logo" class="home-image">
-  <button class="play-button" onclick="navigateToGame()">Play</button>
+
+  <!-- Name Input -->
+  <input
+          type="text"
+          id="player-name"
+          placeholder="Enter your name"
+          oninput="validateName()"
+          maxlength="20"
+  >
+
+  <!-- Play Button -->
+  <button
+          class="play-button"
+          id="play-button"
+          onclick="navigateToGame()"
+          disabled
+  >
+    Play
+  </button>
 </div>
+
 <script src="../js/home.js"></script>
 </body>
 </html>

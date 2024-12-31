@@ -102,8 +102,38 @@ button {
     font-size: 1.2rem;
     color: #333;
 }
-#submit-btn:disabled {
+#submit-btn,play-again-btn:disabled {
     background-color: #ccc;
     color: #666;
+    cursor: not-allowed;
+}
+.navigation-buttons {
+    margin-top: 20px;
+}
+
+.play-again-btn, .back-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+}
+
+.back-btn {
+    background-color: #f44336;
+}
+
+.play-again-btn:hover {
+    background-color: #45a049;
+}
+
+.back-btn:hover {
+    background-color: #d32f2f;
+}
+.play-again-btn:disabled {
+    background-color: #ccc;
     cursor: not-allowed;
 }

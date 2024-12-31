@@ -1,9 +1,13 @@
 package com.example.countdown_game.controller;
 
+import com.example.countdown_game.entity.Score;
 import com.example.countdown_game.service.GameService;
+import com.example.countdown_game.service.ScoreService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,14 +19,17 @@ import java.util.*;
 @RequestMapping("/api/game")
 public class GameController {
     private final GameService gameService;
+    private final ScoreService scoreService;
 
     /**
      * Constructs a GameController with the provided GameService.
      *
-     * @param gameService The service handling game-related logic
+     * @param gameService  The service handling game-related logic
+     * @param scoreService
      */
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, ScoreService scoreService) {
         this.gameService = gameService;
+        this.scoreService = scoreService;
     }
 
     /**
@@ -64,8 +71,16 @@ public class GameController {
      * @return A map containing the word, its validity, and its score
      */
     @PostMapping("/validate")
-    public Map<String, Object> validateWord(@RequestParam String word, @RequestParam String currentLetters) {
+    public Map<String, Object> validateWord(@RequestParam String word,
+                                            @RequestParam String currentLetters,
+                                            @RequestParam String playerName) {
         boolean isValid = gameService.validateWord(word, currentLetters);
+        int scoreValue = isValid ? word.length() : 0;
+
+        // Save the score to the database
+
+        scoreService.saveScore( playerName, currentLetters, word, scoreValue);
+
         Map<String, Object> response = new HashMap<>();
         response.put("word", word);
         response.put("isValid", isValid);
