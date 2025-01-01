@@ -126,7 +126,10 @@ document.getElementById('submit-btn').addEventListener('click', () => {
                 document.getElementById('result').textContent = 'Invalid word!';
             }
         })
-        .catch(error => console.error('Error validating word:', error));
+        .catch(error => {
+            console.error('Error validating word:', error);
+            alert('An error occurred while validating the word. Please try again.');}
+        );
 });
 
 /**

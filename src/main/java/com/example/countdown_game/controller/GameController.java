@@ -3,6 +3,8 @@ package com.example.countdown_game.controller;
 import com.example.countdown_game.entity.Score;
 import com.example.countdown_game.service.GameService;
 import com.example.countdown_game.service.ScoreService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/game")
 public class GameController {
+    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final GameService gameService;
     private final ScoreService scoreService;
 
@@ -43,6 +46,7 @@ public class GameController {
      */
     @GetMapping("/vowels")
     public List<Character> getVowels(@RequestParam(defaultValue = "3") int count) {
+        logger.info("fetch vowel");
         return gameService.generateVowels(count);
     }
 
@@ -57,6 +61,7 @@ public class GameController {
      */
     @GetMapping("/consonants")
     public List<Character> getConsonants(@RequestParam(defaultValue = "6") int count) {
+        logger.info("fetch consonants");
         return gameService.generateConsonants(count);
     }
 
@@ -76,7 +81,7 @@ public class GameController {
                                             @RequestParam String playerName) {
         boolean isValid = gameService.validateWord(word, currentLetters);
         int scoreValue = isValid ? word.length() : 0;
-
+        logger.info("Validate word");
         // Save the score to the database
 
         scoreService.saveScore( playerName, currentLetters, word, scoreValue);

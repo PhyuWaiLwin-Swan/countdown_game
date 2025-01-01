@@ -2,6 +2,8 @@ package com.example.countdown_game.controller;
 
 import com.example.countdown_game.entity.Score;
 import com.example.countdown_game.service.ScoreService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/scores")
 public class ScoreController {
-
+    private static final Logger logger = LoggerFactory.getLogger(ScoreController.class);
     private final ScoreService scoreService;
 
     /**
@@ -36,6 +38,7 @@ public class ScoreController {
      */
     @GetMapping("/player")
     public List<Score> getScoresByPlayer(@RequestParam String playerName) {
+        logger.info("fetch player score");
         return scoreService.getScoresForPlayer(playerName);
     }
 }

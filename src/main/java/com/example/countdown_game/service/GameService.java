@@ -2,6 +2,8 @@ package com.example.countdown_game.service;
 
 
 import com.example.countdown_game.config.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,6 +17,7 @@ import java.util.*;
  */
 @Service
 public class GameService {
+    private static final Logger logger = LoggerFactory.getLogger(GameService.class);
     Random random = new Random();
     private static final List<Character> VOWELS = Arrays.asList('A', 'E', 'I', 'O', 'U');
     private static final List<Character> CONSONANTS = Arrays.asList(
@@ -33,6 +36,7 @@ public class GameService {
         for (int i = 0; i < count; i++) {
             vowels.add(VOWELS.get(random.nextInt(VOWELS.size())));
         }
+        logger.info("Generated vowel: {}", vowels);
         return vowels;
     }
     /**
@@ -43,19 +47,19 @@ public class GameService {
      * @throws RuntimeException If there is an issue with the dictionary API request (e.g., network error or invalid response).
      */
     public boolean isValidWord(String word) {
+        logger.info("Validating word: {}", word);
         try {
             RestTemplate restTemplate = new RestTemplate();
             String apiUrl = Config.getApiUrl();
-            // Construct the URL by appending the word to the API endpoint
             String url = apiUrl + word.toLowerCase();
 
-            // Make a GET request to the dictionary API
+            logger.debug("Sending request to dictionary API: {}", url);
             restTemplate.getForObject(url, Object.class);
 
-            // If the API returns a successful response, the word is valid
+            logger.info("Word '{}' is valid", word);
             return true;
         } catch (Exception e) {
-            // If an exception occurs (e.g., 404 Not Found), the word is invalid
+            logger.warn("Validation failed for word '{}': {}", word, e.getMessage());
             return false;
         }
     }
@@ -73,6 +77,8 @@ public class GameService {
         for (int i = 0; i < count; i++) {
             consonants.add(CONSONANTS.get(random.nextInt(CONSONANTS.size())));
         }
+
+        logger.info("Consonants generated: {}", consonants);
         return consonants;
     }
 
@@ -89,23 +95,29 @@ public class GameService {
      * @return {@code true} if the word is valid; {@code false} otherwise
      */
     public boolean validateWord(String word, String letters) {
-        if (!isValidWord(word)) {
-            return false; // Word must be in the dictionary
-        }
-        Map<Character, Integer> letterCount = new HashMap<>();
+        logger.info("Validating word '{}' against letters '{}'", word, letters);
 
-        // Count occurrences of each letter in the provided letter set
+        // Check if the word is in the dictionary
+        if (!isValidWord(word)) {
+            logger.warn("Word '{}' is not found in the dictionary", word);
+            return false;
+        }
+
+        Map<Character, Integer> letterCount = new HashMap<>();
         for (char letter : letters.toCharArray()) {
             letterCount.put(letter, letterCount.getOrDefault(letter, 0) + 1);
         }
+        logger.debug("Letter count map: {}", letterCount);
 
-        // Validate the word against the available letters
         for (char ch : word.toUpperCase().toCharArray()) {
             if (!letterCount.containsKey(ch) || letterCount.get(ch) == 0) {
+                logger.warn("Word '{}' cannot be formed using the provided letters '{}'", word, letters);
                 return false;
             }
             letterCount.put(ch, letterCount.get(ch) - 1);
         }
+
+        logger.info("Word '{}' is valid based on the provided letters '{}'", word, letters);
         return true;
     }
 }
