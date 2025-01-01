@@ -4,8 +4,11 @@ import com.example.countdown_game.entity.Score;
 import com.example.countdown_game.repository.ScoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,6 +17,7 @@ import java.util.List;
  * and provides methods to save and retrieve scores for players.
  */
 @Service
+@ComponentScan
 public class ScoreService {
 
     private static final Logger logger = LoggerFactory.getLogger(ScoreService.class);
@@ -36,8 +40,13 @@ public class ScoreService {
      * @return a list of {@link Score} objects associated with the given player.
      */
     public List<Score> getScoresForPlayer(String playerName) {
-        logger.info("Retrieving scores for player: {}", playerName);
-        return scoreRepository.findByPlayerName(playerName);
+        try {
+            logger.info("Retrieving scores for player: {}", playerName);
+            return scoreRepository.findByPlayerName(playerName);
+        } catch (Exception e) {
+            logger.error("Failed to retrieve score for player: {}", playerName, e);
+            return Collections.emptyList();
+        }
     }
 
     /**
@@ -48,7 +57,7 @@ public class ScoreService {
      * @param word           the word submitted by the player.
      * @param scoreValue     the score associated with the submitted word.
      */
-    public void saveScore(String playerName, String currentLetters, String word, int scoreValue) {
+    public boolean saveScore(String playerName, String currentLetters, String word, int scoreValue) {
 
         try {
             logger.info("Saving score for player: {}", playerName);
@@ -58,9 +67,10 @@ public class ScoreService {
             score.setSelectedAlphabet(currentLetters);
             score.setScoreValue(scoreValue);
             scoreRepository.save(score);
+            return true;
         } catch (Exception e) {
             logger.error("Failed to save score for player: {}", playerName, e);
-            throw e;
+            return false;
         }
     }
 }

@@ -15,7 +15,12 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     @GetMapping("/")
     public String home() {
-        logger.info("fetch home screen");
-        return "index"; // Renders
+        try {
+            logger.info("Fetching home screen");
+            return "index"; // Renders the home view
+        } catch (Exception e) {
+            logger.error("Error fetching home screen: {}", e.getMessage(), e);
+            return "error"; // Return a generic error view or message
+        }
     }
 }

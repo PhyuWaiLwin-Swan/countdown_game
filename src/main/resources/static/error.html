@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .error-container {
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        h1 {
+            color: #ff6347;
+        }
+        p {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <h1>Something Went Wrong</h1>
+    <p>An error occurred while processing your request.</p>
+    <p><strong>Error Details:</strong> <span th:text="${errorMessage}"></span></p>
+    <a href="/" style="color: #2196F3; text-decoration: none;">Return to Home</a>
+</div>
+</body>
+</html>

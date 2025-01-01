@@ -32,12 +32,17 @@ public class GameService {
      * @return A list of randomly selected vowels
      */
     public List<Character> generateVowels(int count) {
-        List<Character> vowels = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            vowels.add(VOWELS.get(random.nextInt(VOWELS.size())));
+        try {
+            List<Character> vowels = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
+                vowels.add(VOWELS.get(random.nextInt(VOWELS.size())));
+            }
+            logger.info("Generated vowels: {}", vowels);
+            return vowels;
+        } catch (Exception e) {
+            logger.error("Error generating vowels: {}", e.getMessage(), e);
+            return Collections.emptyList();
         }
-        logger.info("Generated vowel: {}", vowels);
-        return vowels;
     }
     /**
      * Checks if a given word is valid by verifying its existence in a dictionary API.
@@ -73,13 +78,17 @@ public class GameService {
      */
     public List<Character> generateConsonants(int count) {
 
-        List<Character> consonants = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            consonants.add(CONSONANTS.get(random.nextInt(CONSONANTS.size())));
+        try {
+            List<Character> consonants = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
+                consonants.add(CONSONANTS.get(random.nextInt(CONSONANTS.size())));
+            }
+            logger.info("Generated consonants: {}", consonants);
+            return consonants;
+        } catch (Exception e) {
+            logger.error("Error generating consonants: {}", e.getMessage(), e);
+            return Collections.emptyList();
         }
-
-        logger.info("Consonants generated: {}", consonants);
-        return consonants;
     }
 
     /**
@@ -95,29 +104,31 @@ public class GameService {
      * @return {@code true} if the word is valid; {@code false} otherwise
      */
     public boolean validateWord(String word, String letters) {
-        logger.info("Validating word '{}' against letters '{}'", word, letters);
-
-        // Check if the word is in the dictionary
-        if (!isValidWord(word)) {
-            logger.warn("Word '{}' is not found in the dictionary", word);
-            return false;
-        }
-
-        Map<Character, Integer> letterCount = new HashMap<>();
-        for (char letter : letters.toCharArray()) {
-            letterCount.put(letter, letterCount.getOrDefault(letter, 0) + 1);
-        }
-        logger.debug("Letter count map: {}", letterCount);
-
-        for (char ch : word.toUpperCase().toCharArray()) {
-            if (!letterCount.containsKey(ch) || letterCount.get(ch) == 0) {
-                logger.warn("Word '{}' cannot be formed using the provided letters '{}'", word, letters);
+        try {
+            if (!isValidWord(word)) {
+                logger.warn("Word '{}' is not valid in the dictionary.", word);
                 return false;
             }
-            letterCount.put(ch, letterCount.get(ch) - 1);
-        }
 
-        logger.info("Word '{}' is valid based on the provided letters '{}'", word, letters);
-        return true;
+            Map<Character, Integer> letterCount = new HashMap<>();
+
+            for (char letter : letters.toCharArray()) {
+                letterCount.put(letter, letterCount.getOrDefault(letter, 0) + 1);
+            }
+
+            for (char ch : word.toUpperCase().toCharArray()) {
+                if (!letterCount.containsKey(ch) || letterCount.get(ch) == 0) {
+                    logger.warn("Word '{}' cannot be formed with available letters.", word);
+                    return false;
+                }
+                letterCount.put(ch, letterCount.get(ch) - 1);
+            }
+
+            logger.info("Word '{}' is valid with the given letters.", word);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error validating word '{}' with letters '{}': {}", word, letters, e.getMessage(), e);
+            return false;
+        }
     }
 }

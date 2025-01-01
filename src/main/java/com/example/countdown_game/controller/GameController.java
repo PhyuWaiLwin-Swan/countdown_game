@@ -5,6 +5,7 @@ import com.example.countdown_game.service.GameService;
 import com.example.countdown_game.service.ScoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.Map;
  * based on the current game session.</p>
  */
 @RestController
+@ComponentScan
 @RequestMapping("/api/game")
 public class GameController {
     private static final Logger logger = LoggerFactory.getLogger(GameController.class);
@@ -46,8 +48,13 @@ public class GameController {
      */
     @GetMapping("/vowels")
     public List<Character> getVowels(@RequestParam(defaultValue = "3") int count) {
-        logger.info("fetch vowel");
-        return gameService.generateVowels(count);
+        try {
+            logger.info("Fetching vowels");
+            return gameService.generateVowels(count);
+        } catch (Exception e) {
+            logger.error("Error generating vowels: {}", e.getMessage(), e);
+            return List.of(); // Return an empty list in case of error
+        }
     }
 
     /**
@@ -61,8 +68,13 @@ public class GameController {
      */
     @GetMapping("/consonants")
     public List<Character> getConsonants(@RequestParam(defaultValue = "6") int count) {
-        logger.info("fetch consonants");
-        return gameService.generateConsonants(count);
+        try {
+            logger.info("Fetching consonants");
+            return gameService.generateConsonants(count);
+        } catch (Exception e) {
+            logger.error("Error generating consonants: {}", e.getMessage(), e);
+            return List.of(); // Return an empty list in case of error
+        }
     }
 
     /**
@@ -79,17 +91,22 @@ public class GameController {
     public Map<String, Object> validateWord(@RequestParam String word,
                                             @RequestParam String currentLetters,
                                             @RequestParam String playerName) {
-        boolean isValid = gameService.validateWord(word, currentLetters);
-        int scoreValue = isValid ? word.length() : 0;
-        logger.info("Validate word");
-        // Save the score to the database
-
-        scoreService.saveScore( playerName, currentLetters, word, scoreValue);
-
         Map<String, Object> response = new HashMap<>();
-        response.put("word", word);
-        response.put("isValid", isValid);
-        response.put("score", isValid ? word.length() : 0);
+        try {
+            logger.info("Validating word: {}", word);
+            boolean isValid = gameService.validateWord(word, currentLetters);
+            int scoreValue = isValid ? word.length() : 0;
+
+            // Save the score to the database
+            scoreService.saveScore(playerName, currentLetters, word, scoreValue);
+
+            response.put("word", word);
+            response.put("isValid", isValid);
+            response.put("score", scoreValue);
+        } catch (Exception e) {
+            logger.error("Error validating word: {}", e.getMessage(), e);
+            response.put("error", "An error occurred while validating the word. Please try again.");
+        }
         return response;
     }
 }
