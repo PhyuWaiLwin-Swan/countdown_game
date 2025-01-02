@@ -18,4 +18,9 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
      * @return a {@link List} of {@link Score} objects associated with the specified player name.
      */
     List<Score> findByPlayerName(String playerName);
+
+    /**
+     * Deletes all score records from the database.
+     */
+    void deleteAll();
 }

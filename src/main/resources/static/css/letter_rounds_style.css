@@ -93,7 +93,7 @@ button {
 }
 
 /* Enabled state styles for buttons */
-.submit-btn, .play-again-btn, .back-btn {
+.submit-btn, .play-again-btn, .end-btn {
     padding: 10px 20px;
     font-size: 1rem;
     margin: 10px;
@@ -105,11 +105,11 @@ button {
 }
 
 /* Specific styles for .back-btn */
-.back-btn {
+.end-btn {
     background-color: #f44336;
 }
 
-.back-btn:hover {
+.end-btn:hover {
     background-color: #d32f2f;
 }
 
@@ -124,3 +124,4 @@ button {
 .submit-btn:disabled:hover, .play-again-btn:disabled:hover {
     background-color: #ccc; /* Ensure hover doesn't change the color */
 }
+

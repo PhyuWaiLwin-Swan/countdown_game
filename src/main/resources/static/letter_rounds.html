@@ -13,6 +13,9 @@
   <div id="game-screen" class="hidden">
     <h2 id="greeting">Hello, Player!</h2>
     <h3 id="round-number">Round, 1</h3>
+    <div id="total-points">
+      Total Points: <span id="points">0</span>
+    </div>
 
     <!-- Letter Slots -->
     <div id="letter-slots">
@@ -37,14 +40,11 @@
 
     <!-- Navigation Buttons -->
     <div class="navigation-buttons">
-      <button onclick="playAgain()" class="play-again-btn" id="play-again-btn" disabled>Play Again</button>
-      <button onclick="goBack()" class="back-btn">Back</button>
+      <button onclick="endGame()" class="end-btn" id="end-btn">End Game</button>
     </div>
 
     <!-- Total Points -->
-    <div id="total-points">
-      Total Points: <span id="points">0</span>
-    </div>
+
   </div>
 
 

@@ -1,3 +1,5 @@
+
+
 /**
  * Navigates the user to the game page (letter_rounds.html) while passing the player's name as a query parameter.
  * If the player's name is not provided, an alert is displayed.
@@ -43,4 +45,21 @@ function validateName() {
         playButton.disabled = true;
     }
 }
+function resetAll(){
+    fetch('/api/scores/resetAll', {
+        method: 'POST',
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('All game data deleted successfully.');
+                // Redirect to home page after deletion
+            } else {
+                console.error('Failed to delete all game data.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting all game data:', error);
+        });
+}
 populatePlayerName();
+resetAll();

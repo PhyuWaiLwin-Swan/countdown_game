@@ -6,7 +6,7 @@ let currentLetters = []; // Holds the selected letters
 let timerInterval; // Interval for the countdown timer
 let timeLeft = 30; // Time remaining for the round
 let currentRound = 1; // Start from round 1
-const totalRounds = 4; // Total number of rounds
+const totalRounds = 5; // Total number of rounds
 let totalPoints = 0;
 
 // DOM Elements
@@ -16,8 +16,8 @@ const consonantButton = document.getElementById('consonant-btn'); // Button to a
 const timerDisplay = document.getElementById('time-left'); // Display for the timer
 const wordInput = document.getElementById('word-input'); // Input field for the user's word
 const submitButton = document.getElementById('submit-btn'); // Submit button
-const playAgainBtn = document.getElementById('play-again-btn');// Play Again button
-const result = document.getElementById('result');
+
+
 const urlParams = new URLSearchParams(window.location.search);
 const playerName = urlParams.get("playerName");
 const greetingElement = document.getElementById("greeting");
@@ -42,12 +42,18 @@ function fetchLetter(type) {
         })
         .catch(error => console.error('Error fetching letter:', error));
 }
-function resetGame() {
+
+/**
+ * Start the game for each round reset all the slot and the button
+ */
+function startGame() {
     if (currentRound < totalRounds) {
+        clearInterval(timerInterval);
         timeLeft = 30;
+        timerDisplay.textContent = timeLeft;
         vowelButton.disabled = false;
         consonantButton.disabled = false;
-        playAgainBtn.disabled = true; // Initially disable the Play Again button
+        // Initially disable the Play Again button
         submitButton.disabled = true;
         wordInput.disabled = true;
         slotsContainer.innerHTML = '';
@@ -58,11 +64,10 @@ function resetGame() {
         }
         wordInput.value = '';
         currentLetters = [];
-
         roundNumber.textContent = `Round ${currentRound}`;
         points.textContent = totalPoints;
     } else {
-        window.location.href = "endGameScreen"
+        endGame()
     }
 
 }
@@ -87,21 +92,8 @@ function addLetter(letter) {
         startTimer(); // Start the countdown timer
         submitButton.disabled = false;
         wordInput.disabled = false;
-        playAgainBtn.disabled = false;
 
-    }
-}
 
-function startGame() {
-    resetGame();
-
-}
-
-// Start a new round
-function startRound() {
-    if (currentRound > totalRounds) {
-        endGame();
-        return;
     }
 }
 
@@ -122,19 +114,16 @@ function startTimer() {
             // Disable input and submit button when time runs out
             wordInput.disabled = true;
             submitButton.disabled = true;
-            clearInterval(timerInterval); // Stop the timer
-            alert('Time is up! Submit your word.');
-            finishRound();
+            clearInterval(timerInterval);
+            submitWord();
         }
     }, 1000); // Update the timer every second
 }
 
-// Retrieve player name from the URL parameters
-
-
+// Redirect to home if playerName is not found
 if (!playerName) {
     alert("Player name is missing. Redirecting to the home page.");
-    window.location.href = "index.html"; // Redirect to home if playerName is not found
+    window.location.href = "index.html";
 }
 
 // Event listener for vowel button
@@ -151,6 +140,14 @@ consonantButton.addEventListener('click', () => {
  * Handles word submission for validation.
  */
 submitButton.addEventListener('click', () => {
+    submitButton.disabled = true;
+    submitWord();
+});
+
+/**
+ * Submit the word when the timer is off or when user click the submit button
+ */
+function submitWord(){
     const word = wordInput.value.trim(); // Get user input
 
     if (word === '') {
@@ -169,44 +166,24 @@ submitButton.addEventListener('click', () => {
             if (data.isValid) {
                 totalPoints += data.score;
                 alert( `Valid word! Score: ${data.score}`);
-                resetGame();
+                startGame();
 
             } else {
                 alert( `Invalid word!`);
-                resetGame();
+                startGame();
             }
         })
         .catch(error => {
             console.error('Error validating word:', error);
             alert('An error occurred while validating the word. Please try again.');}
         );
-});
-function finishRound() {
-    clearInterval(timerInterval);
-    currentRound+=1;
-    resetGame();
 }
 
+/**
+ * When the user click the end game button or the player have play four round of game
+ */
 function endGame() {
-    document.getElementById('greeting').textContent = 'Game Over!';
-    result.textContent = `Your total score is ${totalPoints} points.`;
-    document.getElementById('play-again-btn').disabled = true;
-    document.getElementById('vowel-btn').disabled = true;
-    document.getElementById('consonant-btn').disabled = true;
-    document.getElementById('word-input').disabled = true;
-    document.getElementById('submit-btn').disabled = true;
-}
-/**
- * Reloads the current page to restart the game.
- */
-function playAgain() {
-    window.location.reload();
+    window.location.href = `endScreen.html?playerName=${encodeURIComponent(playerName)}`
 }
 
-/**
- * Redirects the user back to the home page, preserving the player name.
- */
-function goBack() {
-    window.location.href = `index.html?playerName=${encodeURIComponent(playerName)}`;
-}
 window.onload = startGame;

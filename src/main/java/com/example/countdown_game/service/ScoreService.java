@@ -73,4 +73,12 @@ public class ScoreService {
             return false;
         }
     }
+
+    /**
+     * Reset all the game data
+     */
+    public void resetAllGameData() {
+        // Assuming you have a method to delete game data by playerName
+        scoreRepository.deleteAll();
+    }
 }

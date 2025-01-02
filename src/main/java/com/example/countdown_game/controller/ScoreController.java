@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +37,7 @@ public class ScoreController {
      * @param playerName the name of the player whose scores are to be retrieved.
      * @return a {@link List} of {@link Score} objects for the specified player.
      */
-    @GetMapping("/player")
+    @GetMapping("/endScreen")
     public List<Score> getScoresByPlayer(@RequestParam String playerName) {
         try {
             logger.info("Fetching scores for player: {}", playerName);
@@ -50,4 +47,13 @@ public class ScoreController {
             return Collections.emptyList(); // Return an empty list in case of an error
         }
     }
+
+    /**
+     * Endpoint to reset all game data by deleting all records from the database.
+     */
+    @PostMapping("/resetAll")
+    public void resetAllGameData() {
+        scoreService.resetAllGameData();
+    }
+
 }
