@@ -15,7 +15,8 @@ const wordInput = document.getElementById('word-input'); // Input field for the 
 const submitButton = document.getElementById('submit-btn'); // Submit button
 const playAgainBtn = document.getElementById('play-again-btn'); // Play Again button
 playAgainBtn.disabled = true; // Initially disable the Play Again button
-
+submitButton.disabled = true;
+wordInput.disabled = true;
 // Initialize 9 empty slots in the UI
 for (let i = 0; i < totalSlots; i++) {
     const slot = document.createElement('div');
@@ -52,8 +53,11 @@ function addLetter(letter) {
     // Disable letter buttons and enable Play Again button when all slots are filled
     if (currentLetters.length === totalSlots) {
         startTimer(); // Start the countdown timer
+
         vowelButton.disabled = true;
         consonantButton.disabled = true;
+        submitButton.disabled = false;
+        wordInput.disabled = false;
         playAgainBtn.disabled = false;
         vowelButton.classList.add('disabled');
         consonantButton.classList.add('disabled');
