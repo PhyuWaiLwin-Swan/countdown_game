@@ -114,7 +114,7 @@ button {
 }
 
 /* Disabled state styles for .submit-btn and .play-again-btn */
-.submit-btn:disabled, .play-again-btn:disabled {
+.submit-btn:disabled, .play-again-btn:disabled, .vowel-btn:disabled, .consonant-btn:disabled {
     background-color: #ccc;
     color: #666;
     cursor: not-allowed;

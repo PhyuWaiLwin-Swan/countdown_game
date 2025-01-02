@@ -1,46 +1,55 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Countdown Game</title>
   <link rel="stylesheet" href="css/letter_rounds_style.css">
-
 </head>
 <body>
 <div class="centered-container">
-<h1>Countdown Game</h1>
 
-<!-- Letter Slots -->
-<div id="letter-slots">
-  <!-- Slots will be dynamically generated -->
-</div>
+  <!-- Game Screen -->
+  <div id="game-screen" class="hidden">
+    <h2 id="greeting">Hello, Player!</h2>
+    <h3 id="round-number">Round, 1</h3>
 
-<!-- Timer -->
-<div id="timer">Time Left: <span id="time-left">30</span>s</div>
+    <!-- Letter Slots -->
+    <div id="letter-slots">
+      <!-- Slots will be dynamically generated -->
+    </div>
 
-<!-- Buttons -->
-<div class="button-container">
-  <button id="vowel-btn" class="vowel-btn">Vowel</button>
-  <button id="consonant-btn" class="consonant-btn">Consonant</button>
-</div>
+    <!-- Timer -->
+    <div id="timer">Time Left: <span id="time-left">30</span>s</div>
 
-<!-- Input Answer -->
-<input type="text" id="word-input" placeholder="Enter your word"  />
-<button  class="submit-btn" id="submit-btn">Submit</button>
+    <!-- Buttons -->
+    <div class="button-container">
+      <button id="vowel-btn" class="vowel-btn" disabled>Vowel</button>
+      <button id="consonant-btn" class="consonant-btn" disabled>Consonant</button>
+    </div>
 
-<!-- Result -->
-<div id="result"></div>
-  <div class="navigation-buttons">
-    <button onclick="playAgain()" class="play-again-btn" id="play-again-btn">Play Again</button>
-    <button onclick="goBack()" class="back-btn">Back</button>
+    <!-- Input Answer -->
+    <input type="text" id="word-input" placeholder="Enter your word" />
+    <button class="submit-btn" id="submit-btn">Submit</button>
+
+    <!-- Result -->
+    <div id="result"></div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation-buttons">
+      <button onclick="playAgain()" class="play-again-btn" id="play-again-btn" disabled>Play Again</button>
+      <button onclick="goBack()" class="back-btn">Back</button>
+    </div>
+
+    <!-- Total Points -->
+    <div id="total-points">
+      Total Points: <span id="points">0</span>
+    </div>
   </div>
-</div>
 
-<script src="../js/letter_rounds_script.js"></script>
 
 </div>
+
+<script src="js/letter_rounds_script.js"></script>
 </body>
 </html>
-
