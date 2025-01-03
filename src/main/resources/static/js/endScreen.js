@@ -13,10 +13,13 @@ function loadScores() {
     fetch(`/api/scores/endScreen?playerName=${playerName}`)
         .then(response => response.json())
         .then(scores => {
+            const totalPoints = scores.reduce((sum, score) => sum + score.scoreValue, 0);
+
             // Generate the HTML content dynamically
             let content = `
             <h2>Scores for ${playerName}</h2>
             <p>Total Rounds: ${scores.length}</p>
+            <p>Total Points: ${totalPoints}</p>
             <table class="score-table">
                 <thead>
                     <tr>

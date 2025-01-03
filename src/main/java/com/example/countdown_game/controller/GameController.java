@@ -63,11 +63,11 @@ public class GameController {
      * <p>This endpoint allows the client to request a certain number of consonants
      * to be generated randomly from a predefined list.</p>
      *
-     * @param count The number of consonants to generate (default is 6)
+     * @param count The number of consonants to generate (default is 1)
      * @return A list of randomly selected consonants
      */
     @GetMapping("/consonants")
-    public List<Character> getConsonants(@RequestParam(defaultValue = "6") int count) {
+    public List<Character> getConsonants(@RequestParam(defaultValue = "1") int count) {
         try {
             logger.info("Fetching consonants");
             return gameService.generateConsonants(count);

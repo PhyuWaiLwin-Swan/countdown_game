@@ -186,4 +186,14 @@ function endGame() {
     window.location.href = `endScreen.html?playerName=${encodeURIComponent(playerName)}`
 }
 
+/**
+ * pop a confirmation alert if the user want to terminate the game
+ */
+function handleEndGame() {
+    let userConfirmed = confirm("Are you sure you want to end the game?");
+    if (userConfirmed) {
+        endGame();
+    } else {
+    }
+}
 window.onload = startGame;
