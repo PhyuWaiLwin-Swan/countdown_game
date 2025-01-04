@@ -141,7 +141,16 @@ consonantButton.addEventListener('click', () => {
  */
 submitButton.addEventListener('click', () => {
     submitButton.disabled = true;
-    submitWord();
+    const word = wordInput.value.trim(); // Get user input
+
+    if (word === '') {
+        result.textContent = 'Please enter a word!';
+        return;
+    } else {
+        submitWord();
+    }
+
+
 });
 
 /**
@@ -149,12 +158,6 @@ submitButton.addEventListener('click', () => {
  */
 function submitWord(){
     const word = wordInput.value.trim(); // Get user input
-
-    if (word === '') {
-        result.textContent = 'Please enter a word!';
-        return;
-    }
-
     // Validate the word via the backend API
     fetch(`/api/game/validate?playerName=${encodeURIComponent(playerName)}&word=${encodeURIComponent(word)}&currentLetters=${encodeURIComponent(currentLetters.join(''))}`, {
         method: 'POST'

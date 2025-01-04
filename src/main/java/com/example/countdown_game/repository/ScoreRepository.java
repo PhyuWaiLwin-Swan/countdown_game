@@ -2,6 +2,9 @@ package com.example.countdown_game.repository;
 
 import com.example.countdown_game.entity.Score;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,4 +26,9 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
      * Deletes all score records from the database.
      */
     void deleteAll();
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Score")
+    void deleteAllScores();
 }

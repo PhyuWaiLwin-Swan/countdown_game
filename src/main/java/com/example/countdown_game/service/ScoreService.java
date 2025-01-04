@@ -79,6 +79,6 @@ public class ScoreService {
      */
     public void resetAllGameData() {
         // Assuming you have a method to delete game data by playerName
-        scoreRepository.deleteAll();
+        scoreRepository.deleteAllScores();
     }
 }
