@@ -136,6 +136,12 @@ consonantButton.addEventListener('click', () => {
     fetchLetter('consonants');
 });
 
+wordInput.addEventListener("input", function (e) {
+    // Remove any non-alphabetic characters and spaces
+    this.value = this.value.replace(/[^a-zA-Z]/g, "");
+});
+
+
 /**
  * Handles word submission for validation.
  */

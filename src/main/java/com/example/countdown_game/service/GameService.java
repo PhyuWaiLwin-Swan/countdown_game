@@ -2,12 +2,15 @@ package com.example.countdown_game.service;
 
 
 import com.example.countdown_game.config.Config;
+import com.example.countdown_game.utils.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+
 
 /**
  * Service class that handles the core game logic for the Countdown Game.
@@ -24,6 +27,9 @@ public class GameService {
             'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
             'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
     );
+
+
+    InputValidator inputValidator = new InputValidator();
 
     /**
      * Generates a specified number of random vowels.
@@ -49,7 +55,8 @@ public class GameService {
      *
      * @param word The word to validate.
      * @return {@code true} if the word exists in the dictionary API, {@code false} otherwise.
-     * @throws RuntimeException If there is an issue with the dictionary API request (e.g., network error or invalid response).
+     * @throws RuntimeException If there is an issue with the dictionary API request
+     * (e.g., network error or invalid response).
      */
     public boolean isValidWord(String word) {
         logger.info("Validating word: {}", word);
@@ -105,7 +112,7 @@ public class GameService {
      */
     public boolean validateWord(String word, String letters) {
         try {
-            if (!isValidWord(word)) {
+            if (!isValidWord(word) || inputValidator.validateInput(word)) {
                 logger.warn("Word '{}' is not valid in the dictionary.", word);
                 return false;
             }
