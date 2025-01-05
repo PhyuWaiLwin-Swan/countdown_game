@@ -36,12 +36,13 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 
 ### How to Play
 1. Enter your name on the home screen and click Play.
-2. Select vowels or consonants to fill the nine letter slots.
+2. Select vowels or consonants to fill the nine-letter slots.
 3. When all slots are filled, the timer starts.
 4. Enter a word using the given letters.
 5. The word is submitted either manually by clicking "Submit" or automatically when the timer ends.
-6. The app validates your word, calculates your score, and displays the result.
-7. Play again or view your scores.
+6. The app validates your word, calculates your score, and alerts the result.
+7. Players can play four rounds of the game or end it early.
+8. The score will be displayed at the end of the game.
 
 
 #### **Design Patterns**
