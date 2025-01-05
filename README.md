@@ -7,7 +7,7 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 - **Countdown Timer:** A 30-second timer challenges players to form the best possible word.
 - **Word Validation:** Words are validated against a dictionary API to ensure correctness.
 - **Score Tracking:** Player scores are calculated based on word length and saved in a local H2 database.
-- **View Scores:** Players can view their scores and compare performance.
+- **View Scores:** Player can view their scores at the end of the game.
 
 ## Technologies Used
 - **Backend:** Java, Spring Boot
@@ -37,9 +37,11 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 ### How to Play
 1. Enter your name on the home screen and click Play.
 2. Select vowels or consonants to fill the nine letter slots.
-3. When all slots are filled, the timer starts. Enter a word using the given letters and click Submit.
-4. The app validates your word, calculates your score, and displays the result.
-5. Play again or view your scores.
+3. When all slots are filled, the timer starts.
+4. Enter a word using the given letters.
+5. The word is submitted either manually by clicking "Submit" or automatically when the timer ends.
+6. The app validates your word, calculates your score, and displays the result.
+7. Play again or view your scores.
 
 
 #### **Design Patterns**
