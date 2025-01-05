@@ -23,10 +23,13 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
     List<Score> findByPlayerName(String playerName);
 
     /**
-     * Deletes all score records from the database.
+     * Deletes all from the database.
      */
     void deleteAll();
 
+    /**
+     * Delete all records from score table.
+     */
     @Transactional
     @Modifying
     @Query("DELETE FROM Score")

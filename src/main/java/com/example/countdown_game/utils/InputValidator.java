@@ -1,5 +1,8 @@
 package com.example.countdown_game.utils;
 
+/**
+ * Backend input validator
+ */
 public class InputValidator {
 
     /**

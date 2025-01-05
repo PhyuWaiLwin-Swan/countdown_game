@@ -103,15 +103,12 @@ class ScoreServiceTest {
 
     @Test
     void testResetAllGameData() {
-        // Arrange
-        // No need to return anything for deleteAll
-        doNothing().when(scoreRepository).deleteAll(); // Mocking the deleteAll method
 
-        // Act
+        doNothing().when(scoreRepository).deleteAllScores(); // Mocking the deleteAll method
+
         scoreService.resetAllGameData();
 
-        // Assert
-        verify(scoreRepository, times(1)).deleteAll(); // Ensure that deleteAll was called exactly once
+        verify(scoreRepository, times(1)).deleteAllScores(); // Ensure that deleteAll was called exactly once
     }
 }
 

@@ -112,7 +112,7 @@ public class GameService {
      */
     public boolean validateWord(String word, String letters) {
         try {
-            if (!isValidWord(word) || inputValidator.validateInput(word)) {
+            if (!isValidWord(word) || !inputValidator.validateInput(word)) {
                 logger.warn("Word '{}' is not valid in the dictionary.", word);
                 return false;
             }

@@ -59,6 +59,7 @@ public class Score {
     public Score() {
 
     }
+
     // Getters and Setters
 
     /**

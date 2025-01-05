@@ -61,11 +61,7 @@ public class ScoreService {
 
         try {
             logger.info("Saving score for player: {}", playerName);
-            Score score = new Score();
-            score.setPlayerName(playerName);
-            score.setAnswered(word);
-            score.setSelectedAlphabet(currentLetters);
-            score.setScoreValue(scoreValue);
+            Score score = new Score( playerName,  scoreValue,  currentLetters,  word);
             scoreRepository.save(score);
             return true;
         } catch (Exception e) {

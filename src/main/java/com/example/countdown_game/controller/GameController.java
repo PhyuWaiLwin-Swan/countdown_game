@@ -43,12 +43,17 @@ public class GameController {
      * <p>This endpoint allows the client to request a certain number of vowels
      * to be generated randomly from a predefined list.</p>
      *
-     * @param count The number of vowels to generate (default is 3)
+     * @param count The number of vowels to generate (default is 1)
      * @return A list of randomly selected vowels
      */
     @GetMapping("/vowels")
-    public List<Character> getVowels(@RequestParam(defaultValue = "3") int count) {
+    public List<Character> getVowels(@RequestParam(defaultValue = "1") int count) {
         try {
+
+            int maxVowels = 10; // Define your maximum limit
+            if (count > maxVowels) {
+                throw new IllegalArgumentException("Too many consonants requested");
+            }
             logger.info("Fetching vowels");
             return gameService.generateVowels(count);
         } catch (Exception e) {
@@ -69,6 +74,10 @@ public class GameController {
     @GetMapping("/consonants")
     public List<Character> getConsonants(@RequestParam(defaultValue = "1") int count) {
         try {
+            int maxConsonants = 10; // Define your maximum limit
+            if (count > maxConsonants) {
+                throw new IllegalArgumentException("Too many consonants requested");
+            }
             logger.info("Fetching consonants");
             return gameService.generateConsonants(count);
         } catch (Exception e) {
