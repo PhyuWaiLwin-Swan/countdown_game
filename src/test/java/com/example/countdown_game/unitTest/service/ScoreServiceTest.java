@@ -37,6 +37,7 @@ class ScoreServiceTest {
         score.setAnswered("word");
         score.setSelectedAlphabet("ABCDE");
         score.setScoreValue(10);
+        score.setLongestPossibleWord("bead");
 
         when(scoreRepository.findByPlayerName(playerName)).thenReturn(Collections.singletonList(score));
 
@@ -47,6 +48,7 @@ class ScoreServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("word", result.get(0).getAnswered());
+        assertEquals("bead", result.get(0).getLongestPossibleWord());
         verify(scoreRepository, times(1)).findByPlayerName(playerName); // Verifying repository method call
     }
 
@@ -72,11 +74,12 @@ class ScoreServiceTest {
         String currentLetters = "ABCDE";
         String word = "word";
         int scoreValue = 10;
+        String longestPossibleWord = "bead";
 
         when(scoreRepository.save(any(Score.class))).thenReturn(null); // Mock save method
 
         // Act
-        boolean result = scoreService.saveScore(playerName, currentLetters, word, scoreValue);
+        boolean result = scoreService.saveScore(playerName, currentLetters, word, scoreValue, longestPossibleWord);
 
         // Assert
         assertTrue(result); // The save operation should succeed
@@ -90,11 +93,12 @@ class ScoreServiceTest {
         String currentLetters = "ABCDE";
         String word = "word";
         int scoreValue = 10;
+        String longestPossibleWord = "bead";
 
         when(scoreRepository.save(any(Score.class))).thenThrow(new RuntimeException("Database error"));
 
         // Act
-        boolean result = scoreService.saveScore(playerName, currentLetters, word, scoreValue);
+        boolean result = scoreService.saveScore(playerName, currentLetters, word, scoreValue, longestPossibleWord);
 
         // Assert
         assertFalse(result); // The save operation should fail
@@ -103,12 +107,13 @@ class ScoreServiceTest {
 
     @Test
     void testResetAllGameData() {
-
+        // Arrange
         doNothing().when(scoreRepository).deleteAllScores(); // Mocking the deleteAll method
 
+        // Act
         scoreService.resetAllGameData();
 
+        // Assert
         verify(scoreRepository, times(1)).deleteAllScores(); // Ensure that deleteAll was called exactly once
     }
 }
-

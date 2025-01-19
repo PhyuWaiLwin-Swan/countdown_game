@@ -57,11 +57,12 @@ public class ScoreService {
      * @param word           the word submitted by the player.
      * @param scoreValue     the score associated with the submitted word.
      */
-    public boolean saveScore(String playerName, String currentLetters, String word, int scoreValue) {
+    public boolean saveScore(String playerName, String currentLetters, String word,
+                             int scoreValue, String longestPossibleWord) {
 
         try {
             logger.info("Saving score for player: {}", playerName);
-            Score score = new Score( playerName,  scoreValue,  currentLetters,  word);
+            Score score = new Score( playerName, scoreValue, currentLetters, word, longestPossibleWord);
             scoreRepository.save(score);
             return true;
         } catch (Exception e) {

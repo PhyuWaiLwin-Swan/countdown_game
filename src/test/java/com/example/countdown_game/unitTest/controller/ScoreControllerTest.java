@@ -1,6 +1,5 @@
 package com.example.countdown_game.unitTest.controller;
 
-
 import com.example.countdown_game.controller.ScoreController;
 import com.example.countdown_game.entity.Score;
 import com.example.countdown_game.service.ScoreService;
@@ -41,8 +40,8 @@ class ScoreControllerTest {
     void testGetScoresByPlayer_ValidPlayer() throws Exception {
         String playerName = "Player1";
         List<Score> scores = Arrays.asList(
-                new Score("Player1", 50, "ABCDE", "ACE"),
-                new Score("Player1", 30, "FGHIJ", "FIG")
+                new Score("Player1", 50, "ABCDE", "ACE", "BEAD"),
+                new Score("Player1", 30, "FGHIJ", "FIG", "HIGH")
         );
 
         when(scoreService.getScoresForPlayer(playerName)).thenReturn(scores);
@@ -53,7 +52,9 @@ class ScoreControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].playerName").value("Player1"))
                 .andExpect(jsonPath("$[0].scoreValue").value(50))
-                .andExpect(jsonPath("$[1].scoreValue").value(30));
+                .andExpect(jsonPath("$[0].longestPossibleWord").value("BEAD"))
+                .andExpect(jsonPath("$[1].scoreValue").value(30))
+                .andExpect(jsonPath("$[1].longestPossibleWord").value("HIGH"));
 
         verify(scoreService, times(1)).getScoresForPlayer(playerName);
     }

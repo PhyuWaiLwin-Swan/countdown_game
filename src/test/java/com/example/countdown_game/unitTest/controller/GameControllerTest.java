@@ -31,8 +31,9 @@ public class GameControllerTest {
     @InjectMocks
     private GameController gameController;
 
+
     @Test
-    public void testGetVowels() throws Exception {
+    void testGetVowels() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
         when(gameService.generateVowels(3)).thenReturn(List.of('A', 'E', 'I'));
@@ -45,7 +46,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void testGetConsonants() throws Exception {
+    void testGetConsonants() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
         when(gameService.generateConsonants(3)).thenReturn(List.of('B', 'C', 'D'));
@@ -58,14 +59,17 @@ public class GameControllerTest {
     }
 
     @Test
-    public void testValidateWord() throws Exception {
+    void testValidateWord() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
         String currentLetters = "ABCDEF";
         String word = "ACE";
         String playerName = "Player1";
+        String longestWord = "FACE";
 
         when(gameService.validateWord(word, currentLetters)).thenReturn(true);
+        when(gameService.findLongestWord(currentLetters)).thenReturn(longestWord);
+        when(scoreService.saveScore(playerName, currentLetters, word, word.length(), longestWord)).thenReturn(true);
 
         mockMvc.perform(post("/api/game/validate")
                         .param("word", word)
@@ -74,10 +78,12 @@ public class GameControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.word").value(word))
                 .andExpect(jsonPath("$.isValid").value(true))
-                .andExpect(jsonPath("$.score").value(word.length()));
+                .andExpect(jsonPath("$.score").value(word.length()))
+                .andExpect(jsonPath("$.longestWord").value(longestWord));
     }
+
     @Test
-    public void testValidateWord_InvalidWord() throws Exception {
+    void testValidateWord_InvalidWord() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
         String currentLetters = "ABCDEF";
@@ -93,19 +99,18 @@ public class GameControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.word").value(word))
                 .andExpect(jsonPath("$.isValid").value(false))
-                .andExpect(jsonPath("$.score").value(0));
+                .andExpect(jsonPath("$.score").value(0))
+                .andExpect(jsonPath("$.longestWord").doesNotExist());
     }
 
     @Test
-    public void testValidateWord_EmptyWordInput() throws Exception {
+    void testValidateWord_EmptyWordInput() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
         String currentLetters = "ABCDEF";
         String playerName = "Player3";
 
-        // Assume an empty word is valid and scores 0
         when(gameService.validateWord("", currentLetters)).thenReturn(false);
-
 
         mockMvc.perform(post("/api/game/validate")
                         .param("word", "")
@@ -114,26 +119,30 @@ public class GameControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.word").value(""))
                 .andExpect(jsonPath("$.isValid").value(false))
-                .andExpect(jsonPath("$.score").value(0));
+                .andExpect(jsonPath("$.score").value(0))
+                .andExpect(jsonPath("$.longestWord").doesNotExist());
     }
+
     @Test
-    public void testGetVowels_MissingParameter() throws Exception {
+    void testGetVowels_MissingParameter() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
         mockMvc.perform(get("/api/game/vowels")) // Missing 'count' parameter
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0)); // Expect no item by default
+                .andExpect(jsonPath("$.length()").value(0)); // Expect no items by default
     }
 
     @Test
-    public void testValidateWord_LargeLetterSet() throws Exception {
+    void testValidateWord_LargeLetterSet() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
         String currentLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String word = "QUICK";
         String playerName = "Player5";
-
+        String longestWord = "QUIZZES";
+        when(gameService.findLongestWord(currentLetters)).thenReturn(longestWord);
         when(gameService.validateWord(word, currentLetters)).thenReturn(true);
+        when(scoreService.saveScore(playerName, currentLetters, word, word.length(), longestWord)).thenReturn(true);
 
         mockMvc.perform(post("/api/game/validate")
                         .param("word", word)
@@ -141,8 +150,7 @@ public class GameControllerTest {
                         .param("playerName", playerName))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.word").value(word))
-                .andExpect(jsonPath("$.isValid").value(true));
+                .andExpect(jsonPath("$.isValid").value(true))
+                .andExpect(jsonPath("$.longestWord").value(longestWord));
     }
-
-
 }

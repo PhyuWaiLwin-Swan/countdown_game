@@ -42,6 +42,11 @@ public class Score {
     private String answered;
 
     /**
+     * Longest possible Word
+     */
+    private String longestPossibleWord;
+
+    /**
      * Parameterized constructor for creating a Score object with all fields.
      *
      * @param playerName      the name of the player
@@ -49,11 +54,12 @@ public class Score {
      * @param selectedAlphabet the letters selected during the game
      * @param answered        the word answered by the player
      */
-    public Score(String playerName, int score, String selectedAlphabet, String answered) {
+    public Score(String playerName, int score, String selectedAlphabet, String answered, String longestPossibleWord) {
         this.playerName = playerName;
         this.scoreValue = score;
         this.selectedAlphabet = selectedAlphabet;
         this.answered = answered;
+        this.longestPossibleWord = longestPossibleWord;
     }
 
     public Score() {
@@ -124,6 +130,25 @@ public class Score {
     public String getSelectedAlphabet() {
         return selectedAlphabet;
     }
+
+    /**
+     * Gets the longest possible word for a given round.
+     *
+     * @return the longest possible word.
+     */
+    public String getLongestPossibleWord() {
+        return longestPossibleWord;
+    }
+
+    /**
+     * Sets the longest possible word for a given round.
+     *
+     * @param longestPossibleWord the longest word to set.
+     */
+    public void setLongestPossibleWord(String longestPossibleWord) {
+        this.longestPossibleWord = longestPossibleWord;
+    }
+
 
     /**
      * Sets the selected letters used during the game round.

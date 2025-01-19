@@ -27,6 +27,7 @@ function loadScores() {
                         <th>Selected Alphabet</th>
                         <th>Answered Word</th>
                         <th>Score</th>
+                        <th>Longest Possible Word</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,7 @@ function loadScores() {
                             <td>${score.selectedAlphabet}</td>
                             <td>${score.answered}</td>
                             <td>${score.scoreValue}</td>
+                            <td>${score.longestPossibleWord || 'N/A'}</td>
                         </tr>
                     `).join('')}
                 </tbody>

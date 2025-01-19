@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 /**
  *
  *
@@ -25,6 +27,8 @@ public class GameController {
     private static final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final GameService gameService;
     private final ScoreService scoreService;
+
+
 
     /**
      * Constructs a GameController with the provided GameService.
@@ -103,15 +107,25 @@ public class GameController {
         Map<String, Object> response = new HashMap<>();
         try {
             logger.info("Validating word: {}", word);
+            String longestWord = gameService.findLongestWord(currentLetters);
             boolean isValid = gameService.validateWord(word, currentLetters);
             int scoreValue = isValid ? word.length() : 0;
 
+            // Find the longest word that can be formed from the current letters
+
+
             // Save the score to the database
-            scoreService.saveScore(playerName, currentLetters, word, scoreValue);
+            scoreService.saveScore(playerName, currentLetters, word, scoreValue, longestWord);
 
             response.put("word", word);
             response.put("isValid", isValid);
             response.put("score", scoreValue);
+            response.put("longestWord", longestWord);
+            if (longestWord != null) {
+                response.put("longestWordLength", longestWord.length());
+            } else {
+                response.put("longestWordLength", 0);
+            }
         } catch (Exception e) {
             logger.error("Error validating word: {}", e.getMessage(), e);
             response.put("error", "An error occurred while validating the word. Please try again.");

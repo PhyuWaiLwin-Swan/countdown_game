@@ -174,11 +174,14 @@ function submitWord(){
             // Display the result of the validation
             if (data.isValid) {
                 totalPoints += data.score;
-                alert( `Valid word! Score: ${data.score}`);
+                const message = `✅ Valid word! Score: ${data.score}\n` +
+                    `🔍 Longest possible word: ${data.longestWord || "N/A"}`;
+                alert(message);
                 startGame();
-
             } else {
-                alert( `Invalid word!`);
+                const message = `❌ Invalid word!\n` +
+                    `🔍 Longest possible word: ${data.longestWord || "N/A"}`;
+                alert(message);
                 startGame();
             }
         })

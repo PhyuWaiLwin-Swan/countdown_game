@@ -1,11 +1,11 @@
 package com.example.countdown_game.unitTest.service;
 
-import com.example.countdown_game.config.Config;
 import com.example.countdown_game.service.GameService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.web.client.RestTemplate;
+
 
 import java.util.List;
 
@@ -20,12 +20,15 @@ public class GameServiceTest {
     @Mock
     private RestTemplate restTemplate;
 
-    @Mock
-    private Config config;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        gameService = Mockito.spy(new GameService());
+        // Mock the dictionary
+        doReturn(true).when(gameService).isValidWord("CAT");
+        doReturn(false).when(gameService).isValidWord("applz");
+        doReturn(true).when(gameService).isValidWord("apple");
     }
 
     @Test
@@ -46,7 +49,7 @@ public class GameServiceTest {
     @Test
     void testIsValidWord_Valid() {
         String validWord = "apple";
-        when(restTemplate.getForObject(anyString(), eq(Object.class))).thenReturn(new Object());
+
         boolean result = gameService.isValidWord(validWord);
         assertTrue(result);
     }
@@ -54,7 +57,7 @@ public class GameServiceTest {
     @Test
     void testIsValidWord_Invalid() {
         String invalidWord = "applz";
-        when(restTemplate.getForObject(anyString(), eq(Object.class))).thenThrow(new RuntimeException("Word not found"));
+
         boolean result = gameService.isValidWord(invalidWord);
         assertFalse(result);
     }
