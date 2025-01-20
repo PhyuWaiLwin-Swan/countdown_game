@@ -5,7 +5,8 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 ## Features
 - **Random Letter Selection:** Players can choose vowels or consonants to form a set of nine letters.
 - **Countdown Timer:** A 30-second timer challenges players to form the best possible word.
-- **Word Validation:** Words are validated against a dictionary API to ensure correctness.
+- **Word Validation:** Words are validated against a dictionary list to ensure correctness.
+- **Longest Possible Word:**  The longest possible word from the set of nine letters will be displayed in an alert when the user submits their answer, along with the score.
 - **Score Tracking:** Player scores are calculated based on word length and saved in a local H2 database.
 - **View Scores:** Player can view their scores at the end of the game.
 
@@ -13,7 +14,7 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 - **Backend:** Java, Spring Boot
 - **Frontend:** HTML, CSS, JavaScript
 - **Database:** H2 (in-memory database)
-- **APIs:** Dictionary API for word validation
+- **Word Validation:** Uses a word list sourced from [dwyl/english-words](https://github.com/dwyl/english-words/blob/master/words_alpha.txt) for word validation.  
 - **Build Tool:** Maven
 
 ## Build and Run the Application
@@ -40,7 +41,7 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 3. When all slots are filled, the timer starts.
 4. Enter a word using the given letters.
 5. The word is submitted either manually by clicking "Submit" or automatically when the timer ends.
-6. The app validates your word, calculates your score, and alerts the result.
+6. The app validates your word, calculates your score, and alerts the result together with the longest possible word.
 7. Players can play four rounds of the game or end it early.
 8. The score will be displayed at the end of the game.
 
@@ -115,10 +116,3 @@ This structure ensures modularity, maintainability, and scalability.
    - UI updates based on backend responses.
 
 ---
-
-#### **Key Benefits**
-- **Separation of Concerns:** Each layer has a defined role.
-- **Reusability:** Services and repositories are reusable across modules.
-- **Maintainability:** Modular design simplifies debugging and testing.
-- **Scalability:** The structure supports new features like multiplayer or leaderboards. 
-

@@ -146,13 +146,14 @@ wordInput.addEventListener("input", function (e) {
  * Handles word submission for validation.
  */
 submitButton.addEventListener('click', () => {
-    submitButton.disabled = true;
+
     const word = wordInput.value.trim(); // Get user input
 
     if (word === '') {
         result.textContent = 'Please enter a word!';
         return;
     } else {
+        submitButton.disabled = true;
         submitWord();
     }
 

@@ -1,16 +1,18 @@
 package com.example.countdown_game.entity;
 
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * Entity class representing a Score in the Countdown Game.
  * Stores details about a player's score, the word they answered with, and the selected letters.
  */
 @Entity
+@Table(name = "score")
 public class Score {
 
     /**
@@ -24,26 +26,31 @@ public class Score {
     /**
      * The name of the player associated with this score.
      */
+    @Column(name = "player_name", nullable = false)
     private String playerName;
 
     /**
      * The score achieved by the player.
      */
+    @Column(name = "score_value", nullable = false)
     private int scoreValue;
 
     /**
      * The selected letters used during the game round.
      */
+    @Column(name = "selected_alphabet", nullable = false)
     private String selectedAlphabet;
 
     /**
      * The word answered by the player.
      */
+    @Column(name = "answered", nullable = false)
     private String answered;
 
     /**
-     * Longest possible Word
+     * The longest possible word for the game round.
      */
+    @Column(name = "longest_possible_word", nullable = false)
     private String longestPossibleWord;
 
     /**
