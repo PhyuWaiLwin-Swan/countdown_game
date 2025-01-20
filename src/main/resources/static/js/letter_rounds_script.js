@@ -35,10 +35,10 @@ if (playerName) {
  * @param {string} type - The type of letter to fetch ('vowels' or 'consonants').
  */
 function fetchLetter(type) {
-    fetch(`/api/game/${type}?count=1`) // API call to fetch one letter
+    fetch(`/api/game/${type}`) // API call to fetch one letter
         .then(response => response.json())
         .then(letter => {
-            addLetter(letter[0]); // Add the fetched letter to the UI
+            addLetter(letter); // Add the fetched letter to the UI
         })
         .catch(error => console.error('Error fetching letter:', error));
 }

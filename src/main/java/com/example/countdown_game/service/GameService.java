@@ -1,15 +1,19 @@
 package com.example.countdown_game.service;
 
 
-import com.example.countdown_game.config.Config;
+
 import com.example.countdown_game.utils.InputValidator;
+
+import com.example.countdown_game.utils.LongestWordFinder;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.*;
+
+import static com.example.countdown_game.utils.LongestWordFinder.*;
 
 
 /**
@@ -21,6 +25,8 @@ import java.util.*;
 @Service
 public class GameService {
     private static final Logger logger = LoggerFactory.getLogger(GameService.class);
+
+    private static boolean isDictionaryLoaded = false;
     Random random = new Random();
     private static final List<Character> VOWELS = Arrays.asList('A', 'E', 'I', 'O', 'U');
     private static final List<Character> CONSONANTS = Arrays.asList(
@@ -34,45 +40,28 @@ public class GameService {
     /**
      * Generates a specified number of random vowels.
      *
-     * @param count The number of vowels to generate
      * @return A list of randomly selected vowels
      */
-    public List<Character> generateVowels(int count) {
-        try {
-            List<Character> vowels = new ArrayList<>();
-            for (int i = 0; i < count; i++) {
-                vowels.add(VOWELS.get(random.nextInt(VOWELS.size())));
-            }
-            logger.info("Generated vowels: {}", vowels);
-            return vowels;
-        } catch (Exception e) {
-            logger.error("Error generating vowels: {}", e.getMessage(), e);
-            return Collections.emptyList();
-        }
+    public Character generateVowels() {
+        return VOWELS.get(random.nextInt(VOWELS.size()));
     }
+
     /**
-     * Checks if a given word is valid by verifying its existence in a dictionary API.
-     *
-     * @param word The word to validate.
-     * @return {@code true} if the word exists in the dictionary API, {@code false} otherwise.
-     * @throws RuntimeException If there is an issue with the dictionary API request
-     * (e.g., network error or invalid response).
+     * Initializes the dictionary during application startup.
+     * <p>
+     * This method is executed automatically after the bean is constructed, loading the dictionary
+     * into memory for subsequent use.
+     * </p>
      */
-    public boolean isValidWord(String word) {
-        logger.info("Validating word: {}", word);
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            String apiUrl = Config.getApiUrl();
-            String url = apiUrl + word.toLowerCase();
 
-            logger.debug("Sending request to dictionary API: {}", url);
-            restTemplate.getForObject(url, Object.class);
-
-            logger.info("Word '{}' is valid", word);
-            return true;
-        } catch (Exception e) {
-            logger.warn("Validation failed for word '{}': {}", word, e.getMessage());
-            return false;
+    public void initializeDictionary() {
+        if (!isDictionaryLoaded) {
+            synchronized (GameService.class) {
+                if (!isDictionaryLoaded) {
+                    LongestWordFinder.loadDictionary();
+                    isDictionaryLoaded = true;
+                }
+            }
         }
     }
 
@@ -80,22 +69,11 @@ public class GameService {
     /**
      * Generates a specified number of random consonants.
      *
-     * @param count The number of consonants to generate
      * @return A list of randomly selected consonants
      */
-    public List<Character> generateConsonants(int count) {
+    public Character generateConsonants() {
 
-        try {
-            List<Character> consonants = new ArrayList<>();
-            for (int i = 0; i < count; i++) {
-                consonants.add(CONSONANTS.get(random.nextInt(CONSONANTS.size())));
-            }
-            logger.info("Generated consonants: {}", consonants);
-            return consonants;
-        } catch (Exception e) {
-            logger.error("Error generating consonants: {}", e.getMessage(), e);
-            return Collections.emptyList();
-        }
+        return CONSONANTS.get(random.nextInt(CONSONANTS.size()));
     }
 
     /**
@@ -137,5 +115,13 @@ public class GameService {
             logger.error("Error validating word '{}' with letters '{}': {}", word, letters, e.getMessage(), e);
             return false;
         }
+    }
+
+    public boolean isValidWord(String word) {
+        return validateWordInLongestWordFinder(word);
+    }
+
+    public String findLongestWord(String word) throws IOException {
+        return findLongestWordInLongestWordFinder(word);
     }
 }

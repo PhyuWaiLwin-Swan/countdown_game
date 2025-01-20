@@ -33,17 +33,21 @@ public class GameServiceTest {
 
     @Test
     void testGenerateVowels() {
-        List<Character> vowels = gameService.generateVowels(3);
-        assertEquals(3, vowels.size());
-        assertTrue(vowels.stream().allMatch(vowel -> "AEIOU".contains(String.valueOf(vowel))));
+        // Act
+        Character vowel = gameService.generateVowels();
+
+        // Assert
+        assertNotNull(vowel, "Generated vowel should not be null");
+        assertTrue("AEIOU".contains(vowel.toString()), "Generated letter should be a valid vowel (A, E, I, O, U)");
     }
 
     @Test
     void testGenerateConsonants() {
-        List<Character> consonants = gameService.generateConsonants(3);
-        assertEquals(3, consonants.size());
-        assertTrue(consonants.stream().allMatch(consonant ->
-                "BCDFGHJKLMNPQRSTVWXYZ".contains(String.valueOf(consonant))));
+        Character consonants = gameService.generateConsonants();
+
+        assertNotNull(consonants, "Consonants list should not be null");
+        assertFalse("AEIOU".contains(consonants.toString()), "Generated letter should be a consonant (not a vowel: A, E, I, O, U)");
+
     }
 
     @Test

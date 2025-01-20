@@ -36,26 +36,23 @@ public class GameControllerTest {
     void testGetVowels() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
-        when(gameService.generateVowels(3)).thenReturn(List.of('A', 'E', 'I'));
+        when(gameService.generateVowels()).thenReturn('A');
 
-        mockMvc.perform(get("/api/game/vowels?count=3"))
+        mockMvc.perform(get("/api/game/vowels"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value("A"))
-                .andExpect(jsonPath("$[1]").value("E"))
-                .andExpect(jsonPath("$[2]").value("I"));
+                .andExpect(content().string("\"A\""));
+
     }
 
     @Test
     void testGetConsonants() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
 
-        when(gameService.generateConsonants(3)).thenReturn(List.of('B', 'C', 'D'));
+        when(gameService.generateConsonants()).thenReturn('B');
 
-        mockMvc.perform(get("/api/game/consonants?count=3"))
+        mockMvc.perform(get("/api/game/consonants"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value("B"))
-                .andExpect(jsonPath("$[1]").value("C"))
-                .andExpect(jsonPath("$[2]").value("D"));
+                .andExpect(content().string("\"B\""));
     }
 
     @Test
@@ -123,14 +120,6 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$.longestWord").doesNotExist());
     }
 
-    @Test
-    void testGetVowels_MissingParameter() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(gameController).build();
-
-        mockMvc.perform(get("/api/game/vowels")) // Missing 'count' parameter
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0)); // Expect no items by default
-    }
 
     @Test
     void testValidateWord_LargeLetterSet() throws Exception {

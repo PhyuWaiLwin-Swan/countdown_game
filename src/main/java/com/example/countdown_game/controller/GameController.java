@@ -3,6 +3,7 @@ package com.example.countdown_game.controller;
 import com.example.countdown_game.entity.Score;
 import com.example.countdown_game.service.GameService;
 import com.example.countdown_game.service.ScoreService;
+import com.example.countdown_game.utils.LongestWordFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,7 +30,6 @@ public class GameController {
     private final ScoreService scoreService;
 
 
-
     /**
      * Constructs a GameController with the provided GameService.
      *
@@ -39,6 +39,7 @@ public class GameController {
     public GameController(GameService gameService, ScoreService scoreService) {
         this.gameService = gameService;
         this.scoreService = scoreService;
+        gameService.initializeDictionary();
     }
 
     /**
@@ -47,23 +48,12 @@ public class GameController {
      * <p>This endpoint allows the client to request a certain number of vowels
      * to be generated randomly from a predefined list.</p>
      *
-     * @param count The number of vowels to generate (default is 1)
      * @return A list of randomly selected vowels
      */
     @GetMapping("/vowels")
-    public List<Character> getVowels(@RequestParam(defaultValue = "1") int count) {
-        try {
+    public Character getVowels() {
+        return gameService.generateVowels();
 
-            int maxVowels = 10; // Define your maximum limit
-            if (count > maxVowels) {
-                throw new IllegalArgumentException("Too many consonants requested");
-            }
-            logger.info("Fetching vowels");
-            return gameService.generateVowels(count);
-        } catch (Exception e) {
-            logger.error("Error generating vowels: {}", e.getMessage(), e);
-            return List.of(); // Return an empty list in case of error
-        }
     }
 
     /**
@@ -72,22 +62,11 @@ public class GameController {
      * <p>This endpoint allows the client to request a certain number of consonants
      * to be generated randomly from a predefined list.</p>
      *
-     * @param count The number of consonants to generate (default is 1)
      * @return A list of randomly selected consonants
      */
     @GetMapping("/consonants")
-    public List<Character> getConsonants(@RequestParam(defaultValue = "1") int count) {
-        try {
-            int maxConsonants = 10; // Define your maximum limit
-            if (count > maxConsonants) {
-                throw new IllegalArgumentException("Too many consonants requested");
-            }
-            logger.info("Fetching consonants");
-            return gameService.generateConsonants(count);
-        } catch (Exception e) {
-            logger.error("Error generating consonants: {}", e.getMessage(), e);
-            return List.of(); // Return an empty list in case of error
-        }
+    public Character getConsonants() {
+        return gameService.generateConsonants();
     }
 
     /**
@@ -107,11 +86,12 @@ public class GameController {
         Map<String, Object> response = new HashMap<>();
         try {
             logger.info("Validating word: {}", word);
+            // Find the longest word that can be formed from the current letters
             String longestWord = gameService.findLongestWord(currentLetters);
             boolean isValid = gameService.validateWord(word, currentLetters);
             int scoreValue = isValid ? word.length() : 0;
 
-            // Find the longest word that can be formed from the current letters
+
 
 
             // Save the score to the database

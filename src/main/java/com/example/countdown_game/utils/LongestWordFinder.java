@@ -6,8 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
+
 
 /**
  * Utility class to find the longest word from a set of letters and validate words.
@@ -16,7 +19,6 @@ import java.util.*;
  * and finding or validating words based on the dictionary.
  * </p>
  */
-@Component
 public class LongestWordFinder {
     private static final Logger logger = LoggerFactory.getLogger(LongestWordFinder.class);
 
@@ -25,22 +27,7 @@ public class LongestWordFinder {
      */
     private static final Set<String> dictionary = new HashSet<>();
 
-    /**
-     * Initializes the dictionary during application startup.
-     * <p>
-     * This method is executed automatically after the bean is constructed, loading the dictionary
-     * into memory for subsequent use.
-     * </p>
-     */
-    @PostConstruct
-    public static void initializeDictionary() {
-        try {
-            loadDictionary();
-            logger.info("Dictionary loaded successfully.");
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load dictionary", e);
-        }
-    }
+
 
     /**
      * Loads the dictionary from a file into memory.
@@ -48,9 +35,8 @@ public class LongestWordFinder {
      * The dictionary file is expected to be located at the specified relative path.
      * </p>
      *
-     * @throws IOException if there is an error reading the dictionary file.
      */
-    private static void loadDictionary() throws IOException {
+    public static void loadDictionary() {
         // Define the relative path to the file
         String filePath = "src/main/java/com/example/countdown_game/utils/words_alpha.txt";
 
@@ -62,6 +48,8 @@ public class LongestWordFinder {
             while ((word = br.readLine()) != null) {
                 dictionary.add(word.trim().toLowerCase());
             }
+        }catch (Exception e) {
+            logger.error("Failed to load dictionary from file: " + filePath, e);
         }
     }
 
@@ -80,14 +68,14 @@ public class LongestWordFinder {
      *
      * @param letters a string containing the available letters.
      * @return the longest valid word, or {@code null} if no valid word is found.
-     * @throws IOException if the dictionary is not loaded.
      */
-    public static String findLongestWordInLongestWordFinder(String letters) throws IOException {
+    public static String findLongestWordInLongestWordFinder(String letters) {
+
         if (dictionary.isEmpty()) {
-            throw new IllegalStateException("Dictionary is not loaded.");
+            logger.error("Dictionary is not loaded or empty");
         }
 
-        char[] letterArray = letters.toLowerCase(Locale.ROOT).toCharArray();
+        char[] letterArray = letters.toLowerCase(Locale.ROOT).toCharArray(); // give consistent behavior
         Arrays.sort(letterArray); // Sort to handle permutations efficiently
 
         // Try permutations of lengths from max to 1
@@ -112,7 +100,7 @@ public class LongestWordFinder {
      * @param length the desired length of permutations.
      * @return a list of permutations.
      */
-    private static List<String> generatePermutations(char[] letters, int length) {
+    public static List<String> generatePermutations(char[] letters, int length) {
         List<String> result = new ArrayList<>();
         permute(letters, 0, length, result);
         return result;
@@ -170,4 +158,6 @@ public class LongestWordFinder {
         arr[i] = arr[j];
         arr[j] = temp;
     }
+
+
 }
