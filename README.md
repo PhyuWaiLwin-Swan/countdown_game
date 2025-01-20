@@ -15,6 +15,7 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 - **Frontend:** HTML, CSS, JavaScript
 - **Database:** H2 (in-memory database)
 - **Word Validation:** Uses a word list sourced from [dwyl/english-words](https://github.com/dwyl/english-words/blob/master/words_alpha.txt) for word validation.  
+- **Words_alpha.txt:** located at src/main/java/com/example/countdown_game/utils/words_alpha.txt
 - **Build Tool:** Maven
 
 ## Build and Run the Application
