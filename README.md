@@ -26,7 +26,7 @@ The Countdown Game Application is an engaging web-based game inspired by the cla
 ### Steps to Run
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/countdown_game.git
+   git clone https://github.com/PhyuWaiLwin-Swan/countdown_game.git
    cd countdown_game
 2. Build and run the application:
    ```bash
